@@ -1,2 +1,2 @@
-# srs
-SimpleReceiptStorage
+# SRS
+Simple Receipt Storage
