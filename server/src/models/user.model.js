@@ -1,10 +1,33 @@
 import db from './db'
-import Logger from '../../utils/Logger'
+import Logger from '../utils/Logger'
+import bcrypt from 'bcrypt-nodejs'
+// const bcrypt = require( 'bcrypt' )
+
+const errorLogger = new Logger( 'error', 'error.user.model.log' )
 
 const UserModel = {
-    errorLogger: new Logger( 'error', 'error.user.model.log' ),
 
     comparePassword() {},
+
+    /**
+     * Bcrypt password
+     *
+     * @param { string } password - Plaintext password
+     * @return { any } - Hash or false
+     */
+    hashPassword: async( password ) => {
+        try {
+            let salt = null, hash = null
+            salt = await bcrypt.genSaltSync( 10 )
+
+            hash = await bcrypt.hashSync( password, salt )
+
+            return hash
+        } catch ( err ) {
+            errorLogger.log( err )
+            return false
+        }
+    },
 
     /**
      * Create a user in table Users
@@ -14,19 +37,22 @@ const UserModel = {
      */
     async create( data ) {
         const text = `INSERT INTO
-        users()
-        VALUES($1, $2, $3, $4, $5, $6)
+        users( family_name, name, email, password)
+        VALUES($1, $2, $3, $4)
         returning *`
 
         const values = [
-            data
+            data.family_name,
+            data.name,
+            data.email,
+            data.password
         ]
 
         try {
             const { rows } = await db.query( text, values )
             return rows[ 0 ]
         } catch ( err ) {
-            this.errorLogger.log( err )
+            errorLogger.log( err )
             return false
         }
     },
@@ -37,13 +63,13 @@ const UserModel = {
      * @return { any } - return DB row or false
      */
     async getAll() {
-        const text = 'SELECT * FROM users WHERE IS_NULL(deleted_at)'
+        const text = 'SELECT * FROM users WHERE IS_NULL deleted_at'
 
         try {
             const { rows } = await db.query( text )
             return rows[ 0 ]
         } catch ( err ) {
-            this.errorLogger.log( err )
+            errorLogger.log( err )
             return false
         }
     },
@@ -58,7 +84,7 @@ const UserModel = {
         const text = `SELECT * 
         FROM users 
         WHERE 
-            IS_NULL(deleted_at)
+            IS_NULL deleted_at
             AND id = $1`
 
         const values = [
@@ -69,7 +95,7 @@ const UserModel = {
             const { rows } = await db.query( text, values )
             return rows[ 0 ]
         } catch ( err ) {
-            this.errorLogger.log( err )
+            errorLogger.log( err )
             return false
         }
     },
@@ -83,7 +109,7 @@ const UserModel = {
     async update( data ) {
         const text = `UPDATE reflections
         SET 
-        WHERE id=$5 
+        WHERE id = $1 
         returning *`
 
         const values = [
@@ -94,7 +120,7 @@ const UserModel = {
             const { rows } = await db.query( text, values )
             return rows[ 0 ]
         } catch ( err ) {
-            this.errorLogger.log( err )
+            errorLogger.log( err )
             return false
         }
     },
@@ -118,7 +144,7 @@ const UserModel = {
             const { rows } = await db.query( text, values )
             return rows[ 0 ]
         } catch ( err ) {
-            this.errorLogger.log( err )
+            errorLogger.log( err )
             return false
         }
     }

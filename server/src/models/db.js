@@ -1,9 +1,8 @@
 import { Pool } from 'pg'
-import CONFIG from './config/config'
+import CONFIG from '../config/config'
 
 const pool = new Pool( {
-    connectionString: CONFIG.db_uri,
-    ssl: true
+    connectionString: CONFIG.db_uri
 } )
 
 module.exports = {
