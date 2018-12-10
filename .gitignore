@@ -4,6 +4,7 @@ package-lock.json
 
 # builds
 lib
+ssl
 
 # development
 .env

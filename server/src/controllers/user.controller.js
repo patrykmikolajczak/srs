@@ -29,15 +29,15 @@ const UserController = {
         }
 
         if ( !validator.isEmail( body.email ) ) {
-            validation_errors.push( 'Name is required' )
+            validation_errors.push( 'Incorrect e-mail adress' )
         }
 
         if ( validation_errors.length === 0 ) {
             try {
-                body.password = UserModel.hashPassword( body.password )
-                if ( body.password ) {
+                const pass = await UserModel.hashPassword( body.password )
+                if ( pass ) {
+                    body.password = pass
                     const user = await UserModel.create( body )
-                    infoLogger.log( user )
                     if ( !user ) {
                         return res.status( 400 ).json( { error: '' } )
                     }
@@ -46,6 +46,43 @@ const UserController = {
                 } else {
                     return res.status( 400 ).json( { error: 'Hash password error!' } )
                 }
+            } catch ( err ) {
+                errorLogger.log( err )
+                return res.status( 400 ).json( err )
+            }
+        }
+    },
+
+    login: async( req, res ) => {
+        const body = req.body
+
+        const validation_errors = []
+
+        if ( validator.isEmpty( body.password ) ) {
+            validation_errors.push( 'Password is required' )
+        }
+
+        if ( validator.isEmpty( body.email ) ) {
+            validation_errors.push( 'E-mail is required' )
+        }
+
+        if ( !validator.isEmail( body.email ) ) {
+            validation_errors.push( 'Incorrect e-mail adress' )
+        }
+
+        if ( validation_errors.length === 0 ) {
+            try {
+                const user = await UserModel.getOne( body.email )
+                infoLogger.log( user )
+                if ( user ) {
+                    if ( UserModel.comparePassword( body.password, user.password ) ) {
+                        const auth_key = await UserModel.generateAccessAndRefreshToken( user )
+                        return res.status( 200 ).json( auth_key )
+                    } else {
+                        return res.status( 400 ).json( { error: 'Incorrect email or password' } )
+                    }
+                }
+                return res.status( 400 ).json( { error: 'Incorrect email or password' } )
             } catch ( err ) {
                 errorLogger.log( err )
                 return res.status( 400 ).json( err )
