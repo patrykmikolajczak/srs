@@ -39,5 +39,6 @@ router.post(    '/users',           catchAsync( UserController.create ) )       
 // router.put(     '/users',           requireAuth, catchAsync( UserController.get ) )   // U
 // router.delete(  '/users',           requireAuth, catchAsync( UserController.get ) )   // D
 router.post(    '/users/login',     catchAsync( UserController.login ) )
+router.post(    '/users/refresh',   catchAsync( UserController.refresh ) )
 
 export default router

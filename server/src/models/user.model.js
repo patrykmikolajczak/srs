@@ -45,6 +45,12 @@ const UserModel = {
         }
     },
 
+    /**
+     * Generate Access Token and Refresh Token
+     *
+     * @param { Object } user - user data
+     * @return { any } - Return object with AccessToken and RefreshToken or false
+     */
     generateAccessAndRefreshToken: async( user ) => {
         try {
             const expiration_time = parseInt( CONFIG.jwt_expiration )
