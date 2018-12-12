@@ -1,11 +1,13 @@
 import { ExtractJwt, Strategy } from 'passport-jwt'
-import UserModel from '../models/user.model'
+import { UserModel } from '../models/user.model'
 import CONFIG from '../config/config'
+import fs from 'fs'
 
 export default ( passport ) => {
+    const certForAccessToken = fs.readFileSync( CONFIG.jwt_path_for_public_key_access_token )
     const options = {}
     options.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken()
-    options.secretOrKey = CONFIG.jwt_encryption
+    options.secretOrKey = certForAccessToken
 
     passport.use( new Strategy( options, async( jwt_payload, done ) => {
 

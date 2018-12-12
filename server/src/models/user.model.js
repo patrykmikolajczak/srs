@@ -131,7 +131,7 @@ const UserModel = {
 
         try {
             const { rows } = await db.query( text )
-            return rows[ 0 ]
+            return rows
         } catch ( err ) {
             errorLogger.log( err )
             return false
@@ -175,7 +175,7 @@ const UserModel = {
      * @return { any } - return DB row or false
      */
     update: async( data ) => {
-        const text = `UPDATE reflections
+        const text = `UPDATE users
         SET 
         WHERE id = $1 
         returning *`
