@@ -11,7 +11,7 @@ exports.up = ( pgm ) => {
             onDelete: 'cascade'
         },
         refresh_token: {
-            type: 'varchar(1000)',
+            type: 'text',
             notNull: true
         },
         created_at: {

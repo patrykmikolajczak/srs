@@ -99,7 +99,7 @@ const UserModel = {
      * @param { array } data - Array with SQL query data
      * @return { any } - return DB row or false
      */
-    async create( data ) {
+    create: async( data ) => {
         const text = `INSERT INTO
         users( family_name, name, email, password)
         VALUES($1, $2, $3, $4)
@@ -126,7 +126,7 @@ const UserModel = {
      *
      * @return { any } - return DB row or false
      */
-    async getAll() {
+    getAll: async() => {
         const text = 'SELECT * FROM users WHERE IS_NULL deleted_at'
 
         try {
@@ -144,7 +144,7 @@ const UserModel = {
     * @param { any } data - user id or email
     * @return { any } - return DB row or false
     */
-    async getOne( data ) {
+    getOne: async( data ) => {
         let text = `SELECT * 
         FROM users 
         WHERE `
@@ -174,7 +174,7 @@ const UserModel = {
      * @param { array } data - Array with SQL query data
      * @return { any } - return DB row or false
      */
-    async update( data ) {
+    update: async( data ) => {
         const text = `UPDATE reflections
         SET 
         WHERE id = $1 
@@ -199,7 +199,7 @@ const UserModel = {
     * @param { number } id - user id
     * @return { any } - return DB row or false
     */
-    async delete( id ) {
+    deleteOne: async( id ) => {
         const text = `DELETE FROM users 
         WHERE id = $1
         returning *`
