@@ -35,18 +35,20 @@ router.get( '/test', requireAuth, ( req, res ) => {
     } )
 } )
 
+// AUTH
+router.post(    '/auth/login',     catchAsync( UserController.login ) )
+router.post(    '/auth/refresh',   catchAsync( UserController.refresh ) )
+
 // USERS
 router.post(    '/users',           catchAsync( UserController.create ) )             // C
 // router.get(     '/users',           requireAuth, catchAsync( UserController.get ) )   // R
 // router.put(     '/users',           requireAuth, catchAsync( UserController.get ) )   // U
 // router.delete(  '/users',           requireAuth, catchAsync( UserController.get ) )   // D
-router.post(    '/users/login',     catchAsync( UserController.login ) )
-router.post(    '/users/refresh',   catchAsync( UserController.refresh ) )
 
 // CATEGORIES
-router.post(    '/categories',          requireAuth, catchAsync( CategoryController.create ) )  // C
-router.get(     '/categories/:id',      requireAuth, catchAsync( CategoryController.create ) )  // R
-router.put(     '/categories/:id',      requireAuth, catchAsync( CategoryController.create ) )  // U
-router.delete(  '/categories/:id',      requireAuth, catchAsync( CategoryController.create ) )  // D
+router.post(    '/categories',      requireAuth, catchAsync( CategoryController.create ) )          // C
+router.get(     '/categories',      requireAuth, catchAsync( CategoryController.getAllByUserId ) )  // R
+router.put(     '/categories/:id',  requireAuth, catchAsync( CategoryController.update ) )          // U
+router.delete(  '/categories/:id',  requireAuth, catchAsync( CategoryController.deleteOne ) )       // D
 
 export default router

@@ -1,6 +1,7 @@
 import db from './db'
 import Logger from '../utils/Logger'
 
+// const infoLogger = new Logger( 'info' )
 const errorLogger = new Logger( 'error', 'error.user.model.log' )
 
 const CategoryModel = {
@@ -27,14 +28,14 @@ const CategoryModel = {
     },
 
     getAllByUserId: async( data ) => {
-        const text = `SELECT * 
+        const text = `SELECT id, name, description, updated_at 
         FROM categories
         WHERE
-            IS_NULL deleted_at 
-            AND user_id = $1`
+            user_id = $1
+            AND deleted_at IS NULL`
 
         const values = [
-            data.user_id
+            data.id
         ]
 
         try {
@@ -57,6 +58,24 @@ const CategoryModel = {
             data.name,
             data.description,
             new Date()
+        ]
+
+        try {
+            const { rows } = await db.query( text, values )
+            return rows[ 0 ]
+        } catch ( err ) {
+            errorLogger.log( err )
+            return false
+        }
+    },
+
+    deleteOne: async( data ) => {
+        const text = `DELETE FROM categories 
+        WHERE id = $1
+        returning *`
+
+        const values = [
+            data.id
         ]
 
         try {

@@ -23,24 +23,24 @@ const UserController = {
 
         const validation_errors = []
 
-        if ( validator.isEmpty( body.name ) ) {
+        if ( !body.name || validator.isEmpty( body.name ) ) {
             validation_errors.push( 'Name is required' )
         }
 
-        if ( validator.isEmpty( body.family_name ) ) {
+        if ( !body.family_name || validator.isEmpty( body.family_name ) ) {
             validation_errors.push( 'Family name is required' )
         }
 
-        if ( validator.isEmpty( body.password ) ) {
+        if ( !body.password || validator.isEmpty( body.password ) ) {
             validation_errors.push( 'Password is required' )
         }
 
-        if ( validator.isEmpty( body.email ) ) {
+        if ( !body.email || validator.isEmpty( body.email ) ) {
             validation_errors.push( 'E-mail is required' )
-        }
 
-        if ( !validator.isEmail( body.email ) ) {
-            validation_errors.push( 'Incorrect e-mail adress' )
+            if ( !validator.isEmail( body.email ) ) {
+                validation_errors.push( 'Incorrect e-mail adress' )
+            }
         }
 
         if ( validation_errors.length === 0 ) {
@@ -78,16 +78,16 @@ const UserController = {
 
         const validation_errors = []
 
-        if ( validator.isEmpty( body.password ) ) {
+        if ( !body.password || validator.isEmpty( body.password ) ) {
             validation_errors.push( 'Password is required' )
         }
 
-        if ( validator.isEmpty( body.email ) ) {
+        if ( !body.email || validator.isEmpty( body.email ) ) {
             validation_errors.push( 'E-mail is required' )
-        }
 
-        if ( !validator.isEmail( body.email ) ) {
-            validation_errors.push( 'Incorrect e-mail adress' )
+            if ( !validator.isEmail( body.email ) ) {
+                validation_errors.push( 'Incorrect e-mail adress' )
+            }
         }
 
         if ( validation_errors.length === 0 ) {
@@ -124,7 +124,7 @@ const UserController = {
 
         const validation_errors = []
 
-        if ( validator.isEmpty( body.refreshToken ) ) {
+        if ( !body.refreshToken || validator.isEmpty( body.refreshToken ) ) {
             validation_errors.push( 'E-mail is required' )
         }
 
