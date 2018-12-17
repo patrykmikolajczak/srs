@@ -3,6 +3,7 @@ import passport from 'passport'
 
 import { UserController } from '../controllers/user.controller'
 import { CategoryController } from '../controllers/category.controller'
+import { ReceiptController } from '../controllers/receipt.controller'
 
 import { catchAsync } from '../middleware/error'
 
@@ -50,5 +51,12 @@ router.post(    '/categories',      requireAuth, catchAsync( CategoryController.
 router.get(     '/categories',      requireAuth, catchAsync( CategoryController.getAllByUserId ) )  // R
 router.put(     '/categories/:id',  requireAuth, catchAsync( CategoryController.update ) )          // U
 router.delete(  '/categories/:id',  requireAuth, catchAsync( CategoryController.deleteOne ) )       // D
+
+// RECEIPT
+router.post(    '/receipts',        requireAuth, catchAsync( ReceiptController.create ) )           // C
+router.get(     '/receipts',        requireAuth, catchAsync( ReceiptController.getAllByUserId ) )   // R
+router.get(     '/receipts/:id',    requireAuth, catchAsync( ReceiptController.getById ) )          // R
+router.put(     '/receipts/:id',    requireAuth, catchAsync( ReceiptController.update ) )           // U
+router.delete(  '/receipts/:id',    requireAuth, catchAsync( ReceiptController.deleteOne ) )        // D
 
 export default router

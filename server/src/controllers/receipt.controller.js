@@ -1,14 +1,14 @@
-import { CategoryModel } from '../models/categories.model'
+import { ReceiptModel } from '../models/receipts.model'
 import Logger from '../utils/Logger'
 import validator from 'validator'
 
 // const infoLogger = new Logger( 'info' )
 const errorLogger = new Logger( 'error', 'error.log' )
 
-const CategoryController = {
+const ReceiptController = {
 
     /**
-     * Create a new category amd connect with user id
+     * Create a new receipt and connect with user id
      *
      * @param { Object } req Request object
      * @param { Object } res Response object
@@ -20,12 +20,20 @@ const CategoryController = {
 
         const validation_errors = []
 
-        if ( !body.name || validator.isEmpty( body.name ) ) {
-            validation_errors.push( 'Name is required' )
+        if ( !body.url || validator.isEmpty( body.url ) ) {
+            validation_errors.push( 'URL is required' )
         }
 
         if ( !body.description || validator.isEmpty( body.description ) ) {
             validation_errors.push( 'Description is required' )
+        }
+
+        if ( !body.price || validator.isEmpty( body.price ) ) {
+            validation_errors.push( 'Price is required' )
+        }
+
+        if ( !body.category_id || validator.isEmpty( body.category_id ) ) {
+            validation_errors.push( 'Category is required' )
         }
 
         if ( validation_errors.length === 0 ) {
@@ -34,13 +42,13 @@ const CategoryController = {
                     ...body,
                     user_id: user.id
                 }
-                const category = await CategoryModel.create( req_obj )
+                const receipt = await ReceiptModel.create( req_obj )
 
-                if ( !category ) {
+                if ( !receipt ) {
                     return res.status( 400 ).json( { error: '' } )
                 }
 
-                return res.status( 200 ).json( category )
+                return res.status( 200 ).json( receipt )
             } catch ( err ) {
                 errorLogger.log( err )
                 return res.status( 400 ).json( err )
@@ -51,7 +59,7 @@ const CategoryController = {
     },
 
     /**
-     * Get all categories by user id
+     * Get all receipts by user id
      *
      * @param { Object } req Request object
      * @param { Object } res Response object
@@ -61,9 +69,9 @@ const CategoryController = {
         const user = req.user
 
         try {
-            const category = await CategoryModel.getAllByUserId( user )
+            const receipt = await ReceiptModel.getAllByUserId( user )
 
-            return res.status( 200 ).json( category )
+            return res.status( 200 ).json( receipt )
         } catch ( err ) {
             errorLogger.log( err )
             return res.status( 400 ).json( err )
@@ -71,7 +79,25 @@ const CategoryController = {
     },
 
     /**
-     * Update category data by user id
+     * Get receipt by id
+     *
+     * @param { Object } req Request object
+     * @param { Object } res Response object
+     * @return { Object } Response data
+     */
+    getById: async( req, res ) => {
+        try {
+            const receipt = await ReceiptModel.getById( req.params )
+
+            return res.status( 200 ).json( receipt )
+        } catch ( err ) {
+            errorLogger.log( err )
+            return res.status( 400 ).json( err )
+        }
+    },
+
+    /**
+     * Update receipt data by user id
      *
      * @param { Object } req Request object
      * @param { Object } res Response object
@@ -82,12 +108,20 @@ const CategoryController = {
 
         const validation_errors = []
 
-        if ( !body.name || validator.isEmpty( body.name ) ) {
-            validation_errors.push( 'Name is required' )
+        if ( !body.url || validator.isEmpty( body.url ) ) {
+            validation_errors.push( 'URL is required' )
         }
 
         if ( !body.description || validator.isEmpty( body.description ) ) {
             validation_errors.push( 'Description is required' )
+        }
+
+        if ( !body.price || validator.isEmpty( body.price ) ) {
+            validation_errors.push( 'Price is required' )
+        }
+
+        if ( !body.category_id || validator.isEmpty( body.category_id ) ) {
+            validation_errors.push( 'Category is required' )
         }
 
         if ( validation_errors.length === 0 ) {
@@ -96,13 +130,13 @@ const CategoryController = {
                     ...body,
                     id: req.params.id
                 }
-                const category = await CategoryModel.update( query_obj )
+                const receipt = await ReceiptModel.updateOne( query_obj )
 
-                if ( !category ) {
+                if ( !receipt ) {
                     return res.status( 400 ).json( { error: '' } )
                 }
 
-                return res.status( 200 ).json( category )
+                return res.status( 200 ).json( receipt )
             } catch ( err ) {
                 errorLogger.log( err )
                 return res.status( 400 ).json( err )
@@ -113,7 +147,7 @@ const CategoryController = {
     },
 
     /**
-     * Delete category by id
+     * Delete receipt by id
      *
      * @param { Object } req Request object
      * @param { Object } res Response object
@@ -121,14 +155,15 @@ const CategoryController = {
      */
     deleteOne: async( req, res ) => {
         try {
-            const category = await CategoryModel.deleteOne( req.params.id )
+            const receipt = await ReceiptModel.deleteOne( req.params )
 
-            return res.status( 200 ).json( category )
+            return res.status( 200 ).json( receipt )
         } catch ( err ) {
             errorLogger.log( err )
             return res.status( 400 ).json( err )
         }
     }
+
 }
 
-export { CategoryController }
+export { ReceiptController }
