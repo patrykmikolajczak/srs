@@ -1,0 +1,161 @@
+// Welcome screen
+.welcome_screen {
+    position: relative;
+    height: 100vh;
+    width: 100vw;
+
+    @at-root #{&}__footer {
+        position: absolute;
+        bottom: 5%; 
+        left: 10%;
+
+        & > span {
+            font-family: GilroyLight;
+
+            &:nth-child(1), &:nth-child(2) {
+                font-family: GilroyExtraBold;
+                font-size: 3rem;
+                color: $font;
+            }
+
+            &:nth-child(1) {
+                color: $font;
+            }
+
+            &:nth-child(2) {
+                color: $grey2;
+                font-family: GilroyLight;
+                margin: 0px 5px;
+            }
+
+            &:nth-child(3) {
+                color: $font;
+                display: inline-block;
+                text-align: left;
+
+                & > span {
+
+                    &:nth-child(2) {
+                        color: $primary;
+                    }
+
+                    &:nth-child(4) {
+                        color: $grey3;
+                        font-style: italic;
+                    }
+
+                }
+
+            }
+
+        }
+    }
+
+    @at-root #{&}__logo {
+        $animation-speed: 10;
+        $animation-scale: 1.4;
+
+        position: absolute;
+        top: 40%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-family: GilroyExtraBold;
+        font-size: 7rem;
+        color: $primary;
+        text-align: left;
+        display: block;
+
+        @at-root #{&} div {
+
+            &::first-letter {
+                color: $font;
+            }
+
+            @for $i from 0 through 3 {
+                &:nth-child(#{abs($i)}){
+                    margin-left: ( $i * 50px );
+                }
+            }
+
+        }
+
+        @at-root #{&}--fade_out div {
+            animation-iteration-count: 1;
+            animation-name : disappear;
+            animation-duration : 0.3s;
+            animation-direction : normal;
+            animation-fill-mode: forwards;
+
+            @for $i from 0 through 3 {
+                &:nth-child(#{abs($i)}){
+                    animation-delay: $i * 0.1s + 1,5;
+                }
+            }
+        }
+
+        @at-root #{&}--to_left {
+            left: 10%;
+            transform: translate(0, -50%);
+            & div {
+                @for $i from 0 through 3 {
+                    &:nth-child(#{abs($i)}){
+                        margin-left: 0;
+                    }
+                }
+            }
+        }
+
+        @at-root #{&}--go_to_left {
+            animation-iteration-count: 1;
+            animation-duration : 1s;
+            animation-direction : normal;
+            animation-fill-mode: forwards;
+
+            @for $i from 0 through 3 {
+                &:nth-child(#{abs($i)}){
+                    animation-name : to_left;
+                    animation-delay: $i * 0.1s + 1.5s;
+                }
+            }
+
+            @keyframes to_left {
+                0% {
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                }
+                100% {
+                    left: 10%;
+                    transform: translate(0, -50%);
+                }
+            }
+            
+            & div {
+                animation-iteration-count: 1;
+                animation-duration : 1s;
+                animation-direction : normal;
+                animation-fill-mode: forwards;
+
+                @for $i from 0 through 3 {
+                    &:nth-child(#{abs($i)}){
+                        animation-name : to_left_div_#{$i};
+                        animation-delay: $i * 0.1s + 1.5s;
+                    }
+                }
+
+                @for $i from 0 through 3 {
+                    @keyframes to_left_div_#{$i} {
+                        0% {
+                            margin-left: ( $i * 50px );
+                        }
+                        100% {
+                            margin-left: 0;
+                        }
+                    }
+                }
+            }
+
+        }
+
+    }
+
+}

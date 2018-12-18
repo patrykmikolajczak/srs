@@ -1,0 +1,90 @@
+.header {
+    display: block;
+    width: 100vw;
+    text-align: center;
+
+    @at-root #{&}__logo {
+        color: $white;
+        font-family: GilroyExtraBold;
+        font-size: 2rem;
+        display: block;
+        width: 100vw;
+        line-height: 2.5rem;
+        padding: 5px 0;
+        background: $primary;
+        background: linear-gradient(135deg, $primary3 0%,$primary2 40%,$primary 100%);
+        animation: header__logo 1s linear forwards;
+
+        @at-root #{&} div {
+            display: inline-block;
+            margin-right: 5px;
+
+            &::first-letter {
+                color: $font;
+            }
+
+        }
+
+    }
+}
+
+.nav-bar {
+    list-style: none;
+    display: block;
+    width: 100vw;
+    background: $secondary;
+    margin: 0;
+    padding: 0;
+    font-family: GilroyLight;
+    animation: nav_bar__nav 1s linear forwards;
+
+    @at-root #{&}__item {
+        display: inline-block;
+        margin: 0;
+        padding: 0;
+
+        & a, & a:link & a:visited {
+            margin: 0 10px;
+            line-height: 2.5rem;
+            text-decoration: none;
+            color: $white;
+
+            &:hover {
+                color: $grey
+            }
+
+            &:active {
+                color: $grey3
+            }
+
+        }
+
+        & a.router-link-active {
+            color: $grey3;
+        }
+
+    }
+
+}
+
+@keyframes header__logo {
+    0% {
+        transform: translateY(-50px);
+        z-index: 1
+    }
+    100% {
+        transform: translateY(0px);
+        z-index: 1
+    }
+}
+
+@keyframes nav_bar__nav {
+    0% {
+        transform: translateY(-90px);
+        z-index: 0;
+    }
+    100% {
+        transform: translateY(0px);
+        z-index: 0;
+    }
+}

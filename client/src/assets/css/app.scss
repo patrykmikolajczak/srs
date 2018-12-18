@@ -1,0 +1,244 @@
+
+@import "~bootstrap/scss/bootstrap-grid.scss";
+
+// Variables
+@import './variables.scss';
+
+// Animation
+@keyframes disappear{
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+        display: none;
+    }
+}
+
+@keyframes fade_in{
+    0% {
+        opacity: 0;
+        display: none;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+// Transition
+.slide-fade-left-leave-active {
+    animation: slide_fade_out_left 0.5s linear forwards;
+}
+
+.slide-fade-left-leave-to {
+    opacity: 0;
+    transform: translate(-15%, -50%);
+}
+
+@keyframes slide_fade_out_left{
+    0% {
+        opacity: 1;
+        transform: translate(0, -50%);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-15%, -50%);
+    }
+}
+
+.slide-fade-enter-active {
+    animation: slide_fade_in 0.5s linear forwards;
+}
+.slide-fade-leave-active {
+    animation: slide_fade_out 0.5s linear forwards;
+}
+
+.slide-fade-enter {
+    opacity: 1;
+    right: 15%
+}
+
+.slide-fade-leave-to {
+    opacity: 0;
+    right: 10%
+}
+
+@keyframes slide_fade_in{
+    0% {
+        opacity: 0;
+        right: 10%
+    }
+    100% {
+        opacity: 1;
+        right: 15%
+    }
+}
+
+@keyframes slide_fade_out{
+    0% {
+        opacity: 1;
+        right: 15%
+    }
+    100% {
+        opacity: 0;
+        right: 10%
+    }
+}
+
+@keyframes slide_center_fade_out{
+    0% {
+        opacity: 1;
+        right: 15%;
+        top: 40%;
+    }
+    75% {
+        opacity: 1;
+        right: calc(50% - 10vw);
+        top: 40%;
+    }
+    100% {
+        opacity: 0;
+        right: calc(50% - 10vw);
+        top: 0;
+    }
+}
+
+// Fonts
+// https://www.tinkov.info/gilroy.html
+@font-face {
+    font-family: GilroyExtraBold;
+    src: url(../fonts/Gilroy-ExtraBold.otf);
+}
+
+@font-face {
+    font-family: GilroyLight;
+    src: url(../fonts/Gilroy-Light.otf);
+}
+
+body {
+    background-color: $grey;
+    padding: 0;
+    margin: 0;
+}
+
+#app {
+    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    color: $font;
+    height: 100vh;
+    width: 100vw;
+    animation-delay: 1s;
+    animation: fade_in 0.5s linear forwards;
+}
+
+// Welcome screen
+@import './welcome_screen.scss';
+
+// Nav bar
+@import './nav_bar.scss';
+
+// Form
+.form {
+
+    @at-root #{&}__group {
+        $this: &;
+
+        margin-bottom: 10px;
+
+        @at-root #{&}--error {
+
+            & #{$this}__item {
+                border: 1px solid $error;
+                &::placeholder {
+                    color: $error;
+                }
+            }
+
+            & #{$this}__text {
+                color: $error;
+            }
+
+        }
+
+        @at-root #{&}__label {
+            margin-bottom: 5px;
+            text-align: left;
+            display:block;
+        }
+
+        @at-root #{&}__item {
+            width: 100%;
+            display: block;
+            border: 1px solid $font;
+            padding: 10px 20px;
+            background: $light_grey
+        }
+
+        @at-root #{&}__text {
+            display: block;
+            margin-top: .25rem;
+            text-align: left;
+        }
+
+    }
+
+}
+
+.sign_in_up_form {
+    position: absolute;
+    top: 40%;
+    transform: translateY(-50%);
+    right: 15%;
+    width: 20vw;
+    & h1 {
+        font-family: GilroyLight;
+        width: 100%;
+        text-align: center;
+        font-size: 3rem;
+        & span {
+            font-family: GilroyExtraBold;
+            color: #7448ff
+        }
+    }
+
+    @at-root #{&}--out {
+        animation: slide_center_fade_out 1s linear forwards;
+    }
+
+}
+
+.sign_up_in_link {
+    font-family: GilroyLight;
+    display: block;
+    margin: 20px 0;
+    text-decoration: none;
+
+    & span {
+        color: #7448ff
+    }
+
+    &:active, &:hover {
+        font-family: GilroyExtraBold;
+    }
+
+}
+
+// BTN
+.btn {
+    display: inline-block;
+    padding: 10px 21px;
+    text-align: center;
+    font-family: GilroyLight;
+    width: 100%;
+    cursor: pointer;
+    @at-root #{&}--primary {
+        background: $primary;
+        color: #ffffff;
+        background: linear-gradient(135deg, $primary3 0%,$primary2 40%,$primary 100%); 
+        &:hover {
+            font-family: GilroyExtraBold;
+        }
+    }
+}
