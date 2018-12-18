@@ -1,0 +1,12 @@
+# dependences
+node_modules/
+package-lock.json
+
+# build
+lib
+ssl
+
+# development
+.env
+*.log
+.vscode/
