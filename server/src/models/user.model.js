@@ -100,6 +100,10 @@ const UserModel = {
      * @return { any } - return DB row or false
      */
     create: async( data ) => {
+        const result = {
+            error: false
+        }
+
         const text = `INSERT INTO
         users( family_name, name, email, password)
         VALUES($1, $2, $3, $4)
@@ -114,10 +118,12 @@ const UserModel = {
 
         try {
             const { rows } = await db.query( text, values )
-            return rows[ 0 ]
+            result.row = rows[ 0 ]
+            return result
         } catch ( err ) {
             errorLogger.log( err )
-            return false
+            result.error_msg = err
+            return result
         }
     },
 
@@ -127,14 +133,20 @@ const UserModel = {
      * @return { any } - return DB row or false
      */
     getAll: async() => {
+        const result = {
+            error: false
+        }
+
         const text = 'SELECT * FROM users WHERE IS_NULL deleted_at'
 
         try {
             const { rows } = await db.query( text )
-            return rows
+            result.rows = rows
+            return result
         } catch ( err ) {
             errorLogger.log( err )
-            return false
+            result.error_msg = err
+            return result
         }
     },
 
@@ -145,6 +157,10 @@ const UserModel = {
     * @return { any } - return DB row or false
     */
     getOne: async( data ) => {
+        const result = {
+            error: false
+        }
+
         let text = `SELECT * 
         FROM users 
         WHERE `
@@ -161,10 +177,12 @@ const UserModel = {
 
         try {
             const { rows } = await db.query( text, values )
-            return rows[ 0 ]
+            result.row = rows[ 0 ]
+            return result
         } catch ( err ) {
             errorLogger.log( err )
-            return false
+            result.error_msg = err
+            return result
         }
     },
 
@@ -175,6 +193,10 @@ const UserModel = {
      * @return { any } - return DB row or false
      */
     update: async( data ) => {
+        const result = {
+            error: false
+        }
+
         const text = `UPDATE users
         SET 
         WHERE id = $1 
@@ -186,10 +208,12 @@ const UserModel = {
 
         try {
             const { rows } = await db.query( text, values )
-            return rows[ 0 ]
+            result.row = rows[ 0 ]
+            return result
         } catch ( err ) {
             errorLogger.log( err )
-            return false
+            result.error_msg = err
+            return result
         }
     },
 
@@ -200,6 +224,10 @@ const UserModel = {
     * @return { any } - return DB row or false
     */
     deleteOne: async( id ) => {
+        const result = {
+            error: false
+        }
+
         const text = `DELETE FROM users 
         WHERE id = $1
         returning *`
@@ -210,10 +238,12 @@ const UserModel = {
 
         try {
             const { rows } = await db.query( text, values )
-            return rows[ 0 ]
+            result.row = rows[ 0 ]
+            return result
         } catch ( err ) {
             errorLogger.log( err )
-            return false
+            result.error_msg = err
+            return result
         }
     }
 }

@@ -49,6 +49,7 @@ router.post(    '/users',           catchAsync( UserController.create ) )       
 // CATEGORIES
 router.post(    '/categories',      requireAuth, catchAsync( CategoryController.create ) )          // C
 router.get(     '/categories',      requireAuth, catchAsync( CategoryController.getAllByUserId ) )  // R
+router.get(     '/categories/:id',  requireAuth, catchAsync( CategoryController.getById ) )         // R
 router.put(     '/categories/:id',  requireAuth, catchAsync( CategoryController.update ) )          // U
 router.delete(  '/categories/:id',  requireAuth, catchAsync( CategoryController.deleteOne ) )       // D
 

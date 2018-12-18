@@ -36,8 +36,8 @@ const CategoryController = {
                 }
                 const category = await CategoryModel.create( req_obj )
 
-                if ( !category ) {
-                    return res.status( 400 ).json( { error: '' } )
+                if ( category.error ) {
+                    return res.status( 400 ).json( category )
                 }
 
                 return res.status( 200 ).json( category )
@@ -62,6 +62,32 @@ const CategoryController = {
 
         try {
             const category = await CategoryModel.getAllByUserId( user )
+
+            if ( category.error ) {
+                return res.status( 400 ).json( category )
+            }
+
+            return res.status( 200 ).json( category )
+        } catch ( err ) {
+            errorLogger.log( err )
+            return res.status( 400 ).json( err )
+        }
+    },
+
+    /**
+     * Get all categories by user id
+     *
+     * @param { Object } req Request object
+     * @param { Object } res Response object
+     * @return { Object } Response data
+     */
+    getById: async( req, res ) => {
+        try {
+            const category = await CategoryModel.getById( req.params )
+
+            if ( category.error ) {
+                return res.status( 400 ).json( category )
+            }
 
             return res.status( 200 ).json( category )
         } catch ( err ) {
@@ -98,8 +124,8 @@ const CategoryController = {
                 }
                 const category = await CategoryModel.update( query_obj )
 
-                if ( !category ) {
-                    return res.status( 400 ).json( { error: '' } )
+                if ( category.error ) {
+                    return res.status( 400 ).json( category )
                 }
 
                 return res.status( 200 ).json( category )
@@ -122,6 +148,10 @@ const CategoryController = {
     deleteOne: async( req, res ) => {
         try {
             const category = await CategoryModel.deleteOne( req.params.id )
+
+            if ( category.error ) {
+                return res.status( 400 ).json( category )
+            }
 
             return res.status( 200 ).json( category )
         } catch ( err ) {

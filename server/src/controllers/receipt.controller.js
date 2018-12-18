@@ -44,8 +44,8 @@ const ReceiptController = {
                 }
                 const receipt = await ReceiptModel.create( req_obj )
 
-                if ( !receipt ) {
-                    return res.status( 400 ).json( { error: '' } )
+                if ( receipt.error ) {
+                    return res.status( 400 ).json( receipt )
                 }
 
                 return res.status( 200 ).json( receipt )
@@ -71,6 +71,10 @@ const ReceiptController = {
         try {
             const receipt = await ReceiptModel.getAllByUserId( user )
 
+            if ( receipt.error ) {
+                return res.status( 400 ).json( receipt )
+            }
+
             return res.status( 200 ).json( receipt )
         } catch ( err ) {
             errorLogger.log( err )
@@ -88,6 +92,10 @@ const ReceiptController = {
     getById: async( req, res ) => {
         try {
             const receipt = await ReceiptModel.getById( req.params )
+
+            if ( receipt.error ) {
+                return res.status( 400 ).json( receipt )
+            }
 
             return res.status( 200 ).json( receipt )
         } catch ( err ) {
@@ -132,8 +140,8 @@ const ReceiptController = {
                 }
                 const receipt = await ReceiptModel.updateOne( query_obj )
 
-                if ( !receipt ) {
-                    return res.status( 400 ).json( { error: '' } )
+                if ( receipt.error ) {
+                    return res.status( 400 ).json( receipt )
                 }
 
                 return res.status( 200 ).json( receipt )
@@ -156,6 +164,10 @@ const ReceiptController = {
     deleteOne: async( req, res ) => {
         try {
             const receipt = await ReceiptModel.deleteOne( req.params )
+
+            if ( receipt.error ) {
+                return res.status( 400 ).json( receipt )
+            }
 
             return res.status( 200 ).json( receipt )
         } catch ( err ) {

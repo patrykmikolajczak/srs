@@ -49,8 +49,9 @@ const UserController = {
                 if ( pass ) {
                     body.password = pass
                     const user = await UserModel.create( body )
-                    if ( !user ) {
-                        return res.status( 400 ).json( { error: '' } )
+
+                    if ( user.error ) {
+                        return res.status( 400 ).json( user )
                     }
 
                     return res.status( 200 ).json( user )
@@ -94,8 +95,8 @@ const UserController = {
             try {
                 const user = await UserModel.getOne( body.email )
 
-                if ( user ) {
-                    if ( await UserModel.comparePassword( body.password, user.password ) ) {
+                if ( !user.error && user.row !== undefined ) {
+                    if ( await UserModel.comparePassword( body.password, user.row.password ) ) {
                         return await UserController.generateAndSaveTokens( user, res )
                     } else {
                         return res.status( 400 ).json( { error: 'Incorrect email or password' } )
@@ -149,12 +150,12 @@ const UserController = {
                         if ( save_token.refresh_token === body.refreshToken ) {
                             const user = await UserModel.getOne( verifyRefreshToken.user_id )
 
-                            if ( user ) {
+                            if ( !user.error && user.row !== undefined ) {
                                 await TokenModel.deleteOne( {
-                                    user_id: user.id
+                                    user_id: user.row.id
                                 } )
 
-                                return await UserController.generateAndSaveTokens( user, res )
+                                return await UserController.generateAndSaveTokens( user.row, res )
                             }
 
                             return res.status( 400 ).json( { error: 'Token refresh error' } )
